@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { $ } from 'protractor';
 
 @Component({
   selector: 'runner-main',
@@ -6,16 +7,22 @@ import { Component } from '@angular/core';
   styleUrls: ['./runner.component.css']
 })
 export class RunnerComponent {
+  output: string = 'test';
 
-}
-if (typeof Worker !== 'undefined') {
-  // Create a new
-  const worker = new Worker('./runner.worker', { type: 'module' });
-  worker.onmessage = ({ data }) => {
-    console.log(`page got message: ${data}`);
-  };
-  worker.postMessage('hello');
-} else {
-  // Web Workers are not supported in this environment.
-  // You should add a fallback so that your program still executes correctly.
+  constructor (){
+    if (typeof Worker !== 'undefined') {
+      // Create a new
+      const worker = new Worker('./runner.worker', { type: 'module' });
+      worker.onmessage = ({ data }) => {
+         
+       console.log(`value : ${data}`);
+        this.output = `value : ${data}`;
+      };
+      worker.postMessage('hello');
+    } else {
+      // Web Workers are not supported in this environment.
+      // You should add a fallback so that your program still executes correctly.
+    }
+  }
+  
 }
